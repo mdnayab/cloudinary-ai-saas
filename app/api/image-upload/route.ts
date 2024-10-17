@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v2 as cloudinary, UploadStream } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
-import { resolve } from "path";
-import { rejects } from "assert";
 
 // Configuration
 cloudinary.config({
@@ -13,7 +11,7 @@ cloudinary.config({
 
 interface CloudinaryUploadResult {
   public_id: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export async function POST(request: NextRequest) {

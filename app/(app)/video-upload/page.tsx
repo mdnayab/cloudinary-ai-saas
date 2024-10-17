@@ -33,9 +33,17 @@ function VideoUpload() {
     try {
       const response = await axios.post("/api/video-upload", formData);
 
-      router.push("/");
+      if (response.status === 200) {
+        // Handle success, e.g., redirect or show a success message
+        router.push("/");
+      } else {
+        // Handle unexpected status codes
+        console.error(`Unexpected response status: ${response.status}`);
+        alert("Upload failed. Please try again.");
+      }
     } catch (error) {
       console.log(error);
+      alert("An error occurred during the upload.");
     } finally {
       setIsUploading(false);
     }

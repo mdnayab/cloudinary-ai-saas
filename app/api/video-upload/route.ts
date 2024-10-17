@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v2 as cloudinary, UploadStream } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 
@@ -16,7 +16,7 @@ interface CloudinaryUploadResult {
   public_id: string;
   bytes: number;
   duration?: number;
-  [key: string]: any;
+  [key: string]: string | number | undefined;
 }
 
 export async function POST(request: NextRequest) {
