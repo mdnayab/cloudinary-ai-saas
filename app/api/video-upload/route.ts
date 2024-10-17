@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     const { userId } = auth();
 
     if (!userId) {
+      console.error("Unauthorized access attempt, no userId found");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -32,6 +33,11 @@ export async function POST(request: NextRequest) {
       !process.env.CLOUDINARY_API_KEY ||
       !process.env.CLOUDINARY_API_SECRET
     ) {
+      console.error("Missing Cloudinary credentials:", {
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET ? "Present" : "Missing"
+      });
       return NextResponse.json(
         { error: "Cloudinary credentials not found" },
         { status: 500 }
@@ -45,6 +51,7 @@ export async function POST(request: NextRequest) {
     const originalSize = formData.get("originalSize") as string
 
     if (!file) {
+      console.error("No file provided in form data");
       return NextResponse.json({ error: "File not found" }, { status: 400 });
     }
 
@@ -85,6 +92,7 @@ export async function POST(request: NextRequest) {
     console.log("Upload video failed", error);
     return NextResponse.json({ error: "Upload video failed" }, { status: 500 });
   } finally {
+    console.log("Disconnecting Prisma client");
     await prisma.$disconnect()
   }
 }
